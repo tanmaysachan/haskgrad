@@ -33,6 +33,6 @@ executable haskgrad
                       containers >= 0.6.5.1,
                       hspec >= 2.10.8,
                       random >= 1.2.1.1
-    hs-source-dirs:   app,
+    hs-source-dirs:   haskgrad,
                       test
     default-language: Haskell2010
