@@ -4,3 +4,4 @@ class Variable a where
     getParents :: a -> Maybe [a]
     isLeaf :: a -> Bool
     isConstant :: a -> Bool
+    getUniqueId :: a -> Int

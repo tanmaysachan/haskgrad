@@ -10,13 +10,13 @@ import qualified ScalarFunction
 data ScalarHistory = ScalarHistory { lastFn :: Maybe ScalarFunction.Functions
                                    , ctx :: Context Float
                                    , inputs :: Maybe [Scalar]
-                                   }
+                                   } deriving Show
 
 data Scalar = Scalar { uniqueId :: Int
                      , value :: Float
                      , derivative :: Float
                      , history :: Maybe ScalarHistory 
-                     }
+                     } deriving Show
 
 -- UniqueID through randgen :(?
 genUniqueId :: Float -> Int
@@ -33,6 +33,8 @@ instance Variable Scalar where
     -- Scalar is constant if no history
     isConstant Scalar {history = Nothing} = True
     isConstant _ = False
+
+    getUniqueId Scalar {uniqueId = x} = x
 
 
 -- Create scalar node on function application
@@ -64,8 +66,11 @@ extractArg :: [ScalarLike] -> Maybe [Float]
 extractArg [Slf x] = Just [x]
 extractArg [Sls x] = Just [value x]
 
+-- One compulsory var, rest optional
 applyFn1 :: ScalarFunction.Functions -> Scalar -> Maybe [ScalarLike] -> (Context Float, Float)
 applyFn1 f x ys = (ScalarFunction.forward f (value x) (ys >>= extractArg))
 
 applyFn :: ScalarFunction.Functions -> Scalar -> Maybe [ScalarLike] -> Scalar
-applyFn f x ys = initScalar (snd $ applyFn1 f x ys) (Just $ getScalarHistory f (fst $ applyFn1 f x ys) (fmapScalars ys))
+applyFn f x ys = initScalar (snd $ applyFn1 f x ys) (Just $ getScalarHistory f (fst $ applyFn1 f x ys) (fmapScalars $ case ys of
+                                                                                                                        Just ys' -> Just $ (Sls x):ys'
+                                                                                                                        Nothing -> Just [Sls x]))

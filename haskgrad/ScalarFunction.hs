@@ -3,13 +3,11 @@ module ScalarFunction where
 import Autodiff
 import qualified Operators
 
-data FuncVarsType = SingleVar Float | DoubleVar Float Float
-
 handleArgError :: Int -> String
 handleArgError x
     | x == 0 = "Argument quantity mismatch"
 
-data Functions = Add | Log | Mul | Inv | Neg | Sigmoid | ReLU | LessThan | EqualTo | Exp
+data Functions = Add | Log | Mul | Inv | Neg | Sigmoid | ReLU | LessThan | EqualTo | Exp deriving Show
 
 class ScalarFunction a where
     -- 1 compulsory input to forward
