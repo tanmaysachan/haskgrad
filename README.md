@@ -1,4 +1,4 @@
-# Haskgrad
+# Haskgrad (WIP)
 
 Autodifferentiation in Haskell.
 
