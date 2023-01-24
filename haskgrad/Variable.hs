@@ -5,3 +5,7 @@ class Variable a where
     isLeaf :: a -> Bool
     isConstant :: a -> Bool
     getUniqueId :: a -> Int
+    -- TODO: optimize somehow?
+    accumulateDerivative :: Float -> a -> a
+    getOutdegree :: a -> Int
+    addToPath :: a -> a
